@@ -1,0 +1,17 @@
+{
+  "name": "blog2",
+  "description": "Blog app",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.x",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-wiredep": "^1.9.0",
+    "hbs": "*"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-sass": "^0.8.1"
+  }
+}

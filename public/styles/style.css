@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  width: 1330px;
+}
+
+/*# sourceMappingURL=style.css.map */
+
+canvas {
+	width: 1330px;
+	height: 400px;
+	display: block;
+	margin: 40px auto;
+	outline: 1px solid red;
+}
