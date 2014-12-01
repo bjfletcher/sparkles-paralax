@@ -11,6 +11,7 @@ function SPARKLER(cont, args) {
 	increaseDrawDistance,
 	maxRadius = 20,
 	animSpeed = 2000,
+	particles = [],
 
 	init = function() {
 		console.log('initializing sparkler for ' + container + ' element with maxCount ' + maxCount);
@@ -77,70 +78,76 @@ function SPARKLER(cont, args) {
 
 	generateRandomSpark = function() {
 
-		   var pathEl = self.path.node();
-		   var pathLength = pathEl.getTotalLength();
 
-		   var BBox = pathEl.getBBox();
+		var x = 0;
 
-		   console.log(BBox);
-		   var scale = pathLength/BBox.width;
-		   var offsetLeft = document.getElementById("line").offsetLeft;
+		initGen = window.setInterval(function() {
+			if (typeof particles[x] === "undefined") {
+				generateParticle(x);
+				x++;
+			}
 
-		window.setInterval(function() {
+			if ( x === maxCount) {
+				window.clearInterval(initGen);
+			}
+		}, 100)
 
-	      // var x = d3.event.pageX ; 
+	},
 
-	      // x = 500;
-	      $('#current_count').html(currentCount);
-	      var x = Math.random() * pathLength;
+	generateParticle = function(i) {
 
-	      // var x = Math.random() * BBox.width / scale;
-	      // console.log(x);
-	      var beginning = x, end = pathLength, target;
-	      while (true) {
-	        target = Math.floor((beginning + end) / 2);
-	        pos = pathEl.getPointAtLength(target);
-	        if ((target === end || target === beginning) && pos.x !== x) {
-	            break;
-	        }
-	        if (pos.x > x)      end = target;
-	        else if (pos.x < x) beginning = target;
-	        else                break; //position found
-	      }
+		var id = i;
 
-	      var radius = Math.random() * (pathLength  - x )/10;
-	      if (radius > maxRadius) {
-	      	radius = maxRadius;
-	      }
-	      if (radius < 1 ) { radius = 1}
+		var pathEl = self.path.node();
+		var pathLength = pathEl.getTotalLength();
 
-	      // var star = d3.select("#Layer_1:svg");
-	      // var circle = svg.select(function() {
-	      // 		return this.appendChild(document.getElementById("spark_1").cloneNode(true));
-	      // })
-	      var circle = svg.append("circle")
-	      	// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
+		var BBox = pathEl.getBBox();
 
-	        .attr("opacity", 1)
-	        .attr("cx", x + (Math.random() * threshold*2 - threshold))
-	        .attr("cy", pos.y + (Math.random() * threshold*2 - threshold))
-	        .attr("r", 0)
-	        .attr("fill", "white")
-	        .transition()
-			    .delay(function(d,i) { return Math.random() *  500 * i; })
+		var scale = pathLength/BBox.width;
+		var offsetLeft = document.getElementById("line").offsetLeft;
+
+	    var x = Math.random() * pathLength;
+
+		var beginning = x, end = pathLength, target;
+		while (true) {
+		  target = Math.floor((beginning + end) / 2);
+		  pos = pathEl.getPointAtLength(target);
+		  if ((target === end || target === beginning) && pos.x !== x) {
+		      break;
+		  }
+		  if (pos.x > x)      end = target;
+		  else if (pos.x < x) beginning = target;
+		  else                break; //position found
+		}
+
+		var radius = Math.random() * (pathLength  - x )/10;
+		if (radius > maxRadius) {
+			radius = maxRadius;
+		}
+		if (radius < 1 ) { radius = 1}
+
+
+		particles[id] = svg.append("circle")
+			// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
+			.attr("opacity", 1)
+			.attr("cx", x + (Math.random() * threshold*2 - threshold))
+			.attr("cy", pos.y + (Math.random() * threshold*2 - threshold))
+			.attr("r", 0)
+			.attr("fill", "white")
+			.transition()
+			    .delay(function(d,i) { return Math.random() *  1000; })
 			    .duration(Math.random() * animSpeed + animSpeed )
 			    .attr("r", radius)
 			    .style('opacity', 0)
-			.remove(function() {
-			self.currentCount--;
-
+			// .remove(function() {
+			.each("end", function() {
+				console.log('setting new particle')
+				generateParticle(id);
 			});
 
-	      $('#current_count').html(currentCount);
+		// particles[i] = circle;
 
-	    }, 0);
-
-	},
+	}
 
 	randomize = function() {
     var randomizeButton = d3.select("button");
@@ -179,7 +186,7 @@ function SPARKLER(cont, args) {
 
 $(document).ready(function() {
 	var s = new SPARKLER('#line', {
-		maxCount : 100
+		maxCount : 500
 	});
 
 	s.init();
