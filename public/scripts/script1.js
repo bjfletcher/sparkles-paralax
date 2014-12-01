@@ -3,14 +3,14 @@ function SPARKLER(cont, args) {
 	var self = this,
 	threshold = {
 		min : 50,
-		max : 1
+		max : 2
 	},
 	radius = {
 		min : 50,
-		max : 5
+		max : 10
 	},
 	currentCount = 0,
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 100,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 500,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -95,9 +95,6 @@ function SPARKLER(cont, args) {
 		while (true) {
 		  target = Math.floor((beginning + end) / 2);
 		  pos = pathEl.getPointAtLength(target);
-		  // console.log(pos)
-		  // console.log(pathEl.getPathSegAtLength(target));
-
 
 		  if ((target === end || target === beginning) && pos.x !== x) {
 		      break;
@@ -125,20 +122,13 @@ function SPARKLER(cont, args) {
 			, rx = pos.x
 			, r = ((ry2-ry1)*(rx-rx1)+(rx2*ry1) - (rx1*ry1))/(rx2-rx1);
 
-
-
-			// var rad = Math.random() * r/5 + (r-r/5);
-			// if (rad > maxRadius) {
-			// 	rad = maxRadius;
-			// }
-			// if (rad < 1 ) { rad = 1}
-
-
 			var rad = r;
+
 
 		particles[id] = svg.append("circle")
 			// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
 			.attr("opacity", 1)
+			.attr('id', "p_" +id)
 			.attr("cx", x + Math.random() * t - t/2 )
 			.attr("cy", pos.y + Math.random() * t - t/2)
 			.attr("r", 0)
@@ -146,11 +136,11 @@ function SPARKLER(cont, args) {
 			.transition()
 			    .delay(function(d,i) { return Math.random() *  1000; })
 			    .duration(Math.random() * animSpeed + animSpeed )
-			    .attr("r", rad)
+			    .attr("r", r)
 			    .style('opacity', 0)
 			.each("end", function() {
-				console.log('setting new particle')
 				particles[id].remove();
+				d3.select(container).select('#p_' + id).remove();
 				generateParticle(id);
 			});
 

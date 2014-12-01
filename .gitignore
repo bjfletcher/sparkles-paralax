@@ -2,3 +2,4 @@ node_modules/
 npm-debug.log
 bower_components/
 .sass-sache/
+.DS_Store
