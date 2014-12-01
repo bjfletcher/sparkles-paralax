@@ -1,17 +1,28 @@
 function SPARKLER(cont, args) {
 
 	var self = this,
+	threshold = {
+		min : 50,
+		max : 1
+	},
+	radius = {
+		min : 50,
+		max : 5
+	},
 	currentCount = 0,
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 10,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 100,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
-	threshold = 50,
+	maxThreshold = 50,
 	maxDrawRange = 100,
 	increaseDrawDistance,
 	maxRadius = 20,
 	animSpeed = 2000,
 	particles = [],
+
+
+
 
 	init = function() {
 		console.log('initializing sparkler for ' + container + ' element with maxCount ' + maxCount);
@@ -20,8 +31,8 @@ function SPARKLER(cont, args) {
 		randomize();
 	},
 
-	setThreshold = function(t) {
-		threshold = t;
+	setmaxThreshold = function(t) {
+		maxThreshold = t;
 	},
 
 	setAnimSpeed = function(s) {
@@ -39,46 +50,18 @@ function SPARKLER(cont, args) {
 	},
 
 	generateLine = function() {
-
-
 		svg = d3.select(container).append("svg:svg").attr("width", "1335px").attr("height", "500");
-		// var data = d3.range(20).map(function(){return Math.random()*2})
-		// var x = d3.scale.linear().domain([0, 10]).range([0, 700]);
-		// var y = d3.scale.linear().domain([0, 10]).range([10, 200]);
-		// var line = d3.svg.line()
-		// 	.interpolate("cardinal")
-		// 	.x(function(d,i) {return x(i);})
-		// 	.y(function(d) {return y(d*5 + 5);})
-
-		// self.path = svg.append("svg:path").attr("d", line(data));
-
 
     	var l =  d3.select(container).select(function() {
 	    	return this.appendChild(document.getElementById("Layer_1"));
 	  	});
 
-	  	// console.log(self.path.attr("d"));
 	  	console.log(l.select("path").attr("d"));
 
 		self.path = svg.append("svg:path").attr("d", l.select("path").attr("d"));
-
-
-	  	// self.path = l.select("path");
-
-
-
-		// increaseDrawDistance = window.setInterval(function() {
-		// 	maxDrawRange += 20;
-		// 	if (maxDrawRange >= $(container).width() * 10) {
-		// 		maxDrawRange= $(container).width();
-		// 		window.clearInterval(window.increaseDrawDistance);
-		// 	}
-		// }, 50);
 	},
 
 	generateRandomSpark = function() {
-
-
 		var x = 0;
 
 		initGen = window.setInterval(function() {
@@ -90,7 +73,7 @@ function SPARKLER(cont, args) {
 			if ( x === maxCount) {
 				window.clearInterval(initGen);
 			}
-		}, 100)
+		}, 300)
 
 	},
 
@@ -112,6 +95,10 @@ function SPARKLER(cont, args) {
 		while (true) {
 		  target = Math.floor((beginning + end) / 2);
 		  pos = pathEl.getPointAtLength(target);
+		  // console.log(pos)
+		  // console.log(pathEl.getPathSegAtLength(target));
+
+
 		  if ((target === end || target === beginning) && pos.x !== x) {
 		      break;
 		  }
@@ -120,34 +107,55 @@ function SPARKLER(cont, args) {
 		  else                break; //position found
 		}
 
-		var radius = Math.random() * (pathLength  - x )/10;
-		if (radius > maxRadius) {
-			radius = maxRadius;
-		}
-		if (radius < 1 ) { radius = 1}
 
+		// calculate threshold based on distance from the beginning
+		var   tx1 = 0
+			, ty1 = threshold.min
+			, tx2 = BBox.width
+			, ty2 = threshold.min
+			, tx = pos.x
+			, t = ((ty2-ty1)*(tx-tx1)+(tx2*ty1) - (tx1*ty1))/(tx2-tx1);
+
+		// calculate radius based on distance from the beginning
+
+		var   rx1 = 0
+			, ry1 = radius.min
+			, rx2 = BBox.width
+			, ry2 = radius.max
+			, rx = pos.x
+			, r = ((ry2-ry1)*(rx-rx1)+(rx2*ry1) - (rx1*ry1))/(rx2-rx1);
+
+
+
+			// var rad = Math.random() * r/5 + (r-r/5);
+			// if (rad > maxRadius) {
+			// 	rad = maxRadius;
+			// }
+			// if (rad < 1 ) { rad = 1}
+
+
+			var rad = r;
 
 		particles[id] = svg.append("circle")
 			// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
 			.attr("opacity", 1)
-			.attr("cx", x + (Math.random() * threshold*2 - threshold))
-			.attr("cy", pos.y + (Math.random() * threshold*2 - threshold))
+			.attr("cx", x + Math.random() * t - t/2 )
+			.attr("cy", pos.y + Math.random() * t - t/2)
 			.attr("r", 0)
 			.attr("fill", "white")
 			.transition()
 			    .delay(function(d,i) { return Math.random() *  1000; })
 			    .duration(Math.random() * animSpeed + animSpeed )
-			    .attr("r", radius)
+			    .attr("r", rad)
 			    .style('opacity', 0)
-			// .remove(function() {
 			.each("end", function() {
 				console.log('setting new particle')
+				particles[id].remove();
 				generateParticle(id);
 			});
 
-		// particles[i] = circle;
 
-	}
+	},
 
 	randomize = function() {
     var randomizeButton = d3.select("button");
@@ -175,26 +183,23 @@ function SPARKLER(cont, args) {
 		init : init,
 		setMaxCount : setMaxCount,
 		getMaxCount : getMaxCount,
-		setThreshold : setThreshold,
+		setmaxThreshold : setmaxThreshold,
 		setAnimSpeed : setAnimSpeed,
 		getAnimSpeed :getAnimSpeed,
 		setMaxRadius : setMaxRadius
 	}
-
-
 }
 
 $(document).ready(function() {
 	var s = new SPARKLER('#line', {
-		maxCount : 500
 	});
 
 	s.init();
 
-	$('#threshold').mousemove( function() {
+	$('#maxThreshold').mousemove( function() {
 	    var newValue = $(this).val();
-	    $('#threshold_label').html(newValue);
-	    s.setThreshold(newValue);
+	    $('#maxThreshold_label').html(newValue);
+	    s.setmaxThreshold(newValue);
 	});
 
 	$('#anim_speed').mousemove( function() {
@@ -206,7 +211,6 @@ $(document).ready(function() {
 	$('#max_radius').mousemove( function() {
 	    var newValue = parseInt($(this).val(), 10);
 	    $('#max_radius_label').html(newValue);
-	    
 	    s.setMaxRadius(newValue);
 	});
 })
