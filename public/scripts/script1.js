@@ -20,7 +20,7 @@ function SPARKLER(cont, args) {
 		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 50,
 		max : typeof args.radiusMax !== "undefined" ? args.radiusMax :10
 	},
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 20,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 200,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -165,30 +165,30 @@ $(document).ready(function() {
 
 	s.init();
 
-	var count = s.getMaxCount();
-	console.log(count)
+	// var count = s.getMaxCount();
+	// console.log(count)
 
-	$('#setCount').noUiSlider({
-		start: [ eval(s.getMaxCount()) ],
-		range: {
-			'min': [  0 ],
-			'max': [ 500 ]
-		}
-	}).on({
-		slide : function() {
-			s.setMaxCount(Math.round($(this).val()))
-			$('#countCurrent').text(Math.round($(this).val()));
-		}
-	});
+	// $('#setCount').noUiSlider({
+	// 	start: [ eval(s.getMaxCount()) ],
+	// 	range: {
+	// 		'min': [  0 ],
+	// 		'max': [ 500 ]
+	// 	}
+	// }).on({
+	// 	slide : function() {
+	// 		s.setMaxCount(Math.round($(this).val()))
+	// 		$('#countCurrent').text(Math.round($(this).val()));
+	// 	}
+	// });
 
-	var r = s.getRadius();
+	// var r = s.getRadius();
 
-	console.log(r)
+	// console.log(r)
 
-	$('#setRadius').noUiSlider({
-		start: [ r.max, r.min  ],
-		range: { 'min' : [0], 'max' : [100]}
+	// $('#setRadius').noUiSlider({
+	// 	start: [ r.max, r.min  ],
+	// 	range: { 'min' : [0], 'max' : [100]}
 
-	})
+	// })
 })
 
