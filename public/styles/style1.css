@@ -41,7 +41,7 @@ body {
 
   position: absolute;
   right: 50%;
-  margin-right: -290px;
+  margin-right: -190px;
   top:0;
 }
 
@@ -57,7 +57,7 @@ path {
   stroke: #0d518f;
   stroke-width: 1;
   fill: none;
-  opacity :0;
+  opacity :0.5;
 }
 
 button {

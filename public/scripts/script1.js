@@ -1,16 +1,25 @@
+/*
+TODO:
+1. fix algorythm for calculating radius and threshold
+2. adjust animation speed
+3. replace circle with sparkles.
+4. clip bounding box to visible area
+*/
+
+
 function SPARKLER(cont, args) {
 
 	var self = this,
 	threshold = {
-		min : 50,
-		max : 2
+		min : 100,
+		max : 0
 	},
 	radius = {
 		min : 50,
 		max : 10
 	},
 	currentCount = 0,
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 500,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 100,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -20,7 +29,7 @@ function SPARKLER(cont, args) {
 	maxRadius = 20,
 	animSpeed = 2000,
 	particles = [],
-
+	line = typeof args.path !== "undefined" ? args.path : null,
 
 
 
@@ -50,15 +59,16 @@ function SPARKLER(cont, args) {
 	},
 
 	generateLine = function() {
-		svg = d3.select(container).append("svg:svg").attr("width", "1335px").attr("height", "500");
+		svg = d3.select(container).append("svg:svg").attr("width", "1435px").attr("height", "500");
 
     	var l =  d3.select(container).select(function() {
-	    	return this.appendChild(document.getElementById("Layer_1"));
+	    	return this.appendChild(document.getElementById(line));
 	  	});
 
 	  	console.log(l.select("path").attr("d"));
 
 		self.path = svg.append("svg:path").attr("d", l.select("path").attr("d"));
+		self.path.style("left", 50)
 	},
 
 	generateRandomSpark = function() {
@@ -73,7 +83,7 @@ function SPARKLER(cont, args) {
 			if ( x === maxCount) {
 				window.clearInterval(initGen);
 			}
-		}, 300)
+		}, 10)
 
 	},
 
@@ -129,8 +139,8 @@ function SPARKLER(cont, args) {
 			// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
 			.attr("opacity", 1)
 			.attr('id', "p_" +id)
-			.attr("cx", x + Math.random() * t - t/2 )
-			.attr("cy", pos.y + Math.random() * t - t/2)
+			.attr("cx", x + Math.random() * t - t/2 + 100)
+			.attr("cy", pos.y + Math.random() * t - t/2 - 50)
 			.attr("r", 0)
 			.attr("fill", "white")
 			.transition()
@@ -182,6 +192,7 @@ function SPARKLER(cont, args) {
 
 $(document).ready(function() {
 	var s = new SPARKLER('#line', {
+		path : "Layer_1"
 	});
 
 	s.init();
