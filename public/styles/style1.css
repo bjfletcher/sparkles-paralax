@@ -57,16 +57,13 @@ path {
   stroke: #0d518f;
   stroke-width: 1;
   fill: none;
-  opacity :0;
-<<<<<<< HEAD
+  opacity :0.5;
 }
 
 g path {
   stroke: none;
   fill: white;
   opacity: 1;
-=======
->>>>>>> 996f2337bc66094dcb4a8681bb7d853a6289b63f
 }
 
 button {
@@ -150,7 +147,7 @@ background-image: url("/images/header_overlay_3.png");
   font-weight: normal;
   font-size: 40px;
   border-bottom: 1px solid #c0c0c0;
-  line-height: 1.5v;
+  line-height: 1.5;
 }
 
 #globe_large {
@@ -226,10 +223,6 @@ background-image: url("/images/header_overlay_3.png");
   right: 50%;
   margin-right: -106px;
 }
-
-svg {
-}
-
 
 
 .controls {

@@ -139,20 +139,31 @@ function SPARKLER(cont, args) {
 		particles[id] = svg.append('g');
 
 		var size = Math.random() * r*.3 + r*.7;
-		var spark_size = 200; // bbox / 20
+		var sparkSize = 200;
+		var destOpacity
 
-		var scale_size = size/spark_size*2;
+		var scale_size = size/sparkSize*2;
 
 		particles[id].append('circle')
 			.attr('r', size)
 			.style('opacity', 0)
 			.attr('fill', 'red');
 
-	  	var spark = d3.xml("/images/spark_1.svg", "image/svg+xml", function(xml) {
+
+		var sparkles = [
+			"/images/spark_1.svg",
+			"/images/spark_2.svg",
+			"/images/spark_3.svg"
+		];
+
+
+		var item = sparkles[Math.floor(Math.random()*sparkles.length)];
+
+	  	var spark = d3.xml(item, "image/svg+xml", function(xml) {
 	  	  var importedNode = document.importNode(xml.documentElement, true);
 	  	  	$('#p_' + id).html($('#p_' + id).html() + importedNode.innerHTML);
 	  		d3.select('#p_' + id).select('g')
-	  			.style('opacity', 1)
+	  			
 	  			.attr('transform', 'translate(-'+size+', -'+size+') scale('+scale_size+') ');
 	  	});
 
@@ -166,7 +177,7 @@ function SPARKLER(cont, args) {
 		    .delay(delay)
 
 		    .style('opacity', 0)
-			.attr('transform', 'translate('+(x)+','+(pos.y)+') scale(0.5) rotate(90)')
+			.attr('transform', 'translate('+x+','+pos.y+') scale(0.5) rotate(90)')
 
 		    .each("end", function() {
 		    	particles[id].remove();
@@ -197,31 +208,5 @@ $(document).ready(function() {
 	});
 
 	s.init();
-
-	// var count = s.getMaxCount();
-	// console.log(count)
-
-	// $('#setCount').noUiSlider({
-	// 	start: [ eval(s.getMaxCount()) ],
-	// 	range: {
-	// 		'min': [  0 ],
-	// 		'max': [ 500 ]
-	// 	}
-	// }).on({
-	// 	slide : function() {
-	// 		s.setMaxCount(Math.round($(this).val()))
-	// 		$('#countCurrent').text(Math.round($(this).val()));
-	// 	}
-	// });
-
-	// var r = s.getRadius();
-
-	// console.log(r)
-
-	// $('#setRadius').noUiSlider({
-	// 	start: [ r.max, r.min  ],
-	// 	range: { 'min' : [0], 'max' : [100]}
-
-	// })
 })
 
