@@ -21,14 +21,14 @@ function SPARKLER(cont, args) {
 
 	var self = this,
 	threshold = {
-		min : 0,
-		max : 0
+		min : 200,
+		max : 50
 	},
 	radius = {
 		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 150,
 		max : typeof args.radiusMax !== "undefined" ? args.radiusMax :30
 	},
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 30,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 1,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -36,7 +36,7 @@ function SPARKLER(cont, args) {
 	maxDrawRange = 100,
 	increaseDrawDistance,
 	maxRadius = 20,
-	animSpeed = 3000,
+	animSpeed = 2000,
 	particles = [],
 	line = typeof args.path !== "undefined" ? args.path : null,
 
@@ -111,7 +111,7 @@ function SPARKLER(cont, args) {
 		}
 
 		// calculate threshold based on distance from the beginning
-		var   tx1 = 0
+		var   tx1 =  0
 			, ty1 = threshold.min
 			, tx2 = BBox.width
 			, ty2 = threshold.max
@@ -125,16 +125,22 @@ function SPARKLER(cont, args) {
 			, rx = pos.x
 			, r = ((ry2-ry1)*(rx-rx1)+(rx2*ry1) - (rx1*ry1))/(rx2-rx1);
 
-			var rad = r;
+
+		var ox1 = 0
+		  , oy1 = 0.5
+		  , ox2 = BBox.width
+		  , oy2 = 2
+		  , ox = pos.x
+		  , o = ((oy2-oy1)*(ox-ox1)+(ox2*oy1) - (ox1*oy1))/(ox2-ox1);
+		  if ( o > 0.9 ) o = 0.9
+
+		pos.x += Math.random() *t - t/2;
+		pos.y += Math.random() *t - t/2;
+
 			var dur = Math.random() * animSpeed + animSpeed;
-			var delay = Math.random() *  5000
+			var delay = Math.random() *  dur;
 
 		var symbol = d3.svg.symbol().type('rect');
-
-			var cx = pos.x,
-				cy = pos.y;
-
-		var p = particles[id];
 
 		particles[id] = svg.append('g');
 
@@ -161,7 +167,10 @@ function SPARKLER(cont, args) {
 
 	  	var spark = d3.xml(item, "image/svg+xml", function(xml) {
 	  	  var importedNode = document.importNode(xml.documentElement, true);
-	  	  	$('#p_' + id).html($('#p_' + id).html() + importedNode.innerHTML);
+	  	  	$('#p_' + id).html($('#p_' + id).html() + importedNode.outerHTML);
+
+
+	  	  	console.log($(importedNode).find(''))
 	  		d3.select('#p_' + id).select('g')
 	  			
 	  			.attr('transform', 'translate(-'+size+', -'+size+') scale('+scale_size+') ');
@@ -172,21 +181,6 @@ function SPARKLER(cont, args) {
 			.attr('transform', 'translate('+x+','+pos.y+') scale(0) rotate(0)')
 			.attr('id', "p_" +id)
 			.style('opacity', 1)
-			.transition()
-		    .duration(dur)
-		    .delay(delay)
-
-		    .style('opacity', 0)
-			.attr('transform', 'translate('+x+','+pos.y+') scale(0.5) rotate(90)')
-
-		    .each("end", function() {
-		    	particles[id].remove();
-		    	d3.select(container).select('#p_' + id).remove();
-		    	if ( id < maxCount) {
-		    		generateParticle(id);
-		    	}
-		    });	
-
 	}
 
 	return {
