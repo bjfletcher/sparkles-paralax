@@ -8,14 +8,6 @@ TODO:
 
 */
 
-function angleTween(d, i) {
-	var angle = 360 - ((i+1)*20);
-	var i = d3.interpolate(0, angle);
-	return function(t) {
-		return "rotate(" + i(t) + ")";
-	};
-}
-
 centerToOrigin = function(el) {
 var boundingBox;
 boundingBox = el.getBBox();
@@ -36,7 +28,7 @@ function SPARKLER(cont, args) {
 		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 50,
 		max : typeof args.radiusMax !== "undefined" ? args.radiusMax :10
 	},
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 200,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 2,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -147,13 +139,38 @@ function SPARKLER(cont, args) {
 
 		particles[id].append('circle')
 			.attr('r', 20)
-			.style('opacity', 0)
+			.style('opacity', 1)
+			.attr('fill', 'red');
 
-		particles[id].append('rect')
-			.attr('width', 26)
-			.attr('height', 26)
-			.style('fill', 'white')
-			.attr('transform', 'translate(-13, -13)')
+		// particles[id].append('rect')
+		// 	.attr('width', 26)
+		// 	.attr('height', 26)
+		// 	.style('fill', 'white')
+		// 	.attr('transform', 'translate(-13, -13)')
+
+    // 	var s1 =  d3.select(cont).select(function() {
+	   //  	return this.appendChild(document.getElementById("spark_1"));
+	  	// });
+
+	  	// var c = s1.selectAll("path");
+
+	  	// for (i in s1.selectAll("path") ) {
+	  	// for (var i = 0; i < s1.selectAll("path").length; i++) {
+	  	// 	var p = s1.selectAll("path")[i]
+	  	// 	console.log(p)
+	  	// 	// var p = s1.selectAll("path")[i];
+	  	// 	// console.log(s1.selectAll("path")[i].path)
+	  	// 	// particles[id].append("svg:path")
+	  	// 	// .attr("d", p.attr("d"))
+	  	// }
+
+	  	var spark = d3.xml("/images/spark_1.svg", "image/svg+xml", function(xml) {
+	  	  var importedNode = document.importNode(xml.documentElement, true);
+	  	  console.log(importedNode);
+			// document.body.appendChild(importedNode);
+
+	  	});
+
 
 		particles[id]
 			.attr('transform', 'translate('+x+','+pos.y+') scale(0) rotate(0)')
