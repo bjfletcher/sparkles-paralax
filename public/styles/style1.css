@@ -58,12 +58,15 @@ path {
   stroke-width: 1;
   fill: none;
   opacity :0;
+<<<<<<< HEAD
 }
 
 g path {
   stroke: none;
   fill: white;
   opacity: 1;
+=======
+>>>>>>> 996f2337bc66094dcb4a8681bb7d853a6289b63f
 }
 
 button {
