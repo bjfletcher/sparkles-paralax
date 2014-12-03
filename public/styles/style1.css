@@ -57,7 +57,13 @@ path {
   stroke: #0d518f;
   stroke-width: 1;
   fill: none;
-  opacity :0.5;
+  opacity :0;
+}
+
+g path {
+  stroke: none;
+  fill: white;
+  opacity: 1;
 }
 
 button {
