@@ -1,10 +1,10 @@
 /*
 TODO:
-1. fix algorythm for calculating radius and threshold
-2. adjust animation speed
-3. replace circle with sparkles.
-4. clip bounding box to visible area
-5. refractor attaching svgs
+	1. fix algorythm for calculating radius and threshold
+	2. adjust animation speed
+√	3. replace circle with sparkles. 
+	4. clip bounding box to visible area
+√	5. refractor attaching svgs
 
 */
 
@@ -25,10 +25,10 @@ function SPARKLER(cont, args) {
 		max : 0
 	},
 	radius = {
-		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 50,
-		max : typeof args.radiusMax !== "undefined" ? args.radiusMax :10
+		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 150,
+		max : typeof args.radiusMax !== "undefined" ? args.radiusMax :30
 	},
-	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 2,
+	maxCount = typeof args.maxCount !== "undefined" ? args.maxCount : 30,
 	container = typeof cont !== "undefined" ? cont : false,
 	svg,
 	path,
@@ -64,6 +64,7 @@ function SPARKLER(cont, args) {
 	  	});
 
 		self.path = svg.append("svg:path").attr("d", l.select("path").attr("d"));
+
 		self.path.style("left", 50)
 	},
 
@@ -137,38 +138,22 @@ function SPARKLER(cont, args) {
 
 		particles[id] = svg.append('g');
 
+		var size = Math.random() * r*.3 + r*.7;
+		var spark_size = 200; // bbox / 20
+
+		var scale_size = size/spark_size*2;
+
 		particles[id].append('circle')
-			.attr('r', 20)
-			.style('opacity', 1)
+			.attr('r', size)
+			.style('opacity', 0)
 			.attr('fill', 'red');
-
-		// particles[id].append('rect')
-		// 	.attr('width', 26)
-		// 	.attr('height', 26)
-		// 	.style('fill', 'white')
-		// 	.attr('transform', 'translate(-13, -13)')
-
-    // 	var s1 =  d3.select(cont).select(function() {
-	   //  	return this.appendChild(document.getElementById("spark_1"));
-	  	// });
-
-	  	// var c = s1.selectAll("path");
-
-	  	// for (i in s1.selectAll("path") ) {
-	  	// for (var i = 0; i < s1.selectAll("path").length; i++) {
-	  	// 	var p = s1.selectAll("path")[i]
-	  	// 	console.log(p)
-	  	// 	// var p = s1.selectAll("path")[i];
-	  	// 	// console.log(s1.selectAll("path")[i].path)
-	  	// 	// particles[id].append("svg:path")
-	  	// 	// .attr("d", p.attr("d"))
-	  	// }
 
 	  	var spark = d3.xml("/images/spark_1.svg", "image/svg+xml", function(xml) {
 	  	  var importedNode = document.importNode(xml.documentElement, true);
-	  	  console.log(importedNode);
-			// document.body.appendChild(importedNode);
-
+	  	  	$('#p_' + id).html($('#p_' + id).html() + importedNode.innerHTML);
+	  		d3.select('#p_' + id).select('g')
+	  			.style('opacity', 1)
+	  			.attr('transform', 'translate(-'+size+', -'+size+') scale('+scale_size+') ');
 	  	});
 
 
@@ -181,7 +166,7 @@ function SPARKLER(cont, args) {
 		    .delay(delay)
 
 		    .style('opacity', 0)
-			.attr('transform', 'translate('+x+','+pos.y+') scale(1) rotate(90)')
+			.attr('transform', 'translate('+(x)+','+(pos.y)+') scale(0.5) rotate(90)')
 
 		    .each("end", function() {
 		    	particles[id].remove();
@@ -191,89 +176,6 @@ function SPARKLER(cont, args) {
 		    	}
 		    });	
 
-		// particles[id] = svg.append('g')
-		// 	.attr('class', 'rotate')
-  // 			// .attr('x', x-10)
-  // 			// .attr('y', pos.y-10)
-  // 			// .attr('x2', x + r)
-  // 			// .attr('y2', pos.y + r)
-  // 			// .attr('d', d3.svg.symbol().type('rect'))
-  // 			.attr('width', 20)
-  // 			.attr('height', 20)
-		// 	.attr("fill", "black")
-		// 	.attr('id', "p_" +id)
-		// 	.attr("transform", "translate(" + (Math.round(x-10)) + "," + ( Math.round(pos.y-10)) + ")")
-		// 	// .attr('transform', 'rotate(5, '+x+', '+pos.y+')')
-		// 	.attr("transform", "rotate(0) ");
-			
-		// particles[id].append('rect')
-		// 	// .attr('x', x-10)
-		// 	// .attr('y', pos.y-10)
-  // 			.attr('width', 20)
-  // 			.attr('height', 20)
-		// 	.attr("fill", "black")
-		// 	.attr('id', "p_" +id)
-		// 	.attr('r', r)
-			
-		// particles[id]
-		// .style('opacity', 1)
-		// .attr("transform", "rotate(0) ")
-		// .transition()
-		//     .delay(delay )
-		//     .duration( dur )
-		//     .style('opacity', 0)
-		//     .attr('fill', 'white')
-		//     .attr("transform", "rotate(40) ")
-
-		// .each("end", function() {
-		// 	particles[id].remove();
-		// 	d3.select(container).select('#p_' + id).remove();
-		// 	if ( id < maxCount) {
-		// 		generateParticle(id);
-		// 	}
-		// 	});			
-
-
-		// var center = centerToOrigin(particles[id].node());
-
-		// particles[id]
-			
-
-			// .attr('transform', 'rotate(45, '+x+', '+pos.y+')')
-			// .ease('cubic')
-			//.attrTween("transform", angleTween);
-
-			// spark.attr('fill', 'black');
-
-			// .style('opacity', 0)
-			// .attr('transform', 'rotate(90,'++' ,'++' )')
-			// .attr("transform", "matrix(10, 0, 0, 10, "+(cx-10*cx)+", "+(cy-10*cy)+")")
-
-			// .attr('transform', function() {
-			// 	return 'rotate(54, '+(x - 20)+', '+(pos.y - 100)+')';
-			// })
-		
-
-		// particles[id] = svg.append("circle")
-		// 	// .attr('filter','url(#i1)') // need to find a better way because this is too heavy for browsers...
-		// 	.attr("opacity", 1)
-		// 	.attr('id', "p_" +id)
-		// 	.attr("cx", x + Math.random() * t * 10 / (BBox.width - pos.x))
-		// 	.attr("cy", pos.y + Math.random() * t - t/2)
-		// 	.attr("r", 0)
-		// 	.attr("fill", "white")
-		// 	.transition()
-		// 	    .delay(delay )
-		// 	    .duration( dur )
-		// 	    .attr("r", r)
-		// 	    .style('opacity', 0)
-		// 	.each("end", function() {
-		// 		particles[id].remove();
-		// 		d3.select(container).select('#p_' + id).remove();
-		// 		if ( id < maxCount) {
-		// 			generateParticle(id);
-		// 		}
-		// 	});
 	}
 
 	return {
