@@ -21,8 +21,8 @@ function SPARKLER(cont, args) {
 
 	var self = this,
 	threshold = {
-		min : typeof args.thresholdMin !== "undefined" ? args.thresholdMin : 200,
-		max : typeof args.thresholdMax !== "undefined" ? args.thresholdMax : 50
+		min : typeof args.thresholdMin !== "undefined" ? args.thresholdMin : 10,
+		max : typeof args.thresholdMax !== "undefined" ? args.thresholdMax : 20
 	},
 	radius = {
 		min : typeof args.radiusMin !== "undefined" ? args.radiusMin : 100,
@@ -40,12 +40,12 @@ function SPARKLER(cont, args) {
 	maxDrawRange = 100,
 	increaseDrawDistance,
 	maxRadius = 20,
-	animSpeed = 6000,
+	animSpeed = 4000,
 	particles = [],
 	line = typeof args.path !== "undefined" ? args.path : null,
 
 	init = function() {
-		console.log('initializing sparkler for ' + container + ' element with maxCount ' + maxCount);
+		//console.log('initializing sparkler for ' + container + ' element with maxCount ' + maxCount);
 		generateLine(container, line, { w : $(cont).width(), h : $(cont).height()});
 		generateRandomSpark();
 	},
@@ -71,7 +71,7 @@ function SPARKLER(cont, args) {
 
 		self.path.style("left", 50)
 
-		console.log(svg)
+		// console.log(svg)
 	},
 
 	generateRandomSpark = function() {
@@ -96,7 +96,6 @@ function SPARKLER(cont, args) {
 		var BBox = pathEl.getBBox();
 
 		var scale = pathLength/BBox.width;
-		var offsetLeft = document.getElementById("line").offsetLeft;
 
 	    var x = Math.random() * pathLength ;
 
@@ -138,7 +137,7 @@ function SPARKLER(cont, args) {
 		  , oy2 = opacity.max * 10
 		  , ox = pos.x
 		  , o = ((oy2-oy1)*(ox-ox1)+(ox2*oy1) - (ox1*oy1))/(ox2-ox1);
-		  o *= 2;
+		  o *= 10;
 		  if ( o >= 0.9 ) o = 0.9;
 
 		pos.x += Math.random() *t - t/2;
@@ -157,33 +156,21 @@ function SPARKLER(cont, args) {
 
 		var scale_size = size/sparkSize*2;
 
-		particles[id].append('circle')
-			.attr('r', size)
-			.style('opacity', 0)
-			.attr('fill', 'red');
-
 		// pick and load random sparkle
 		var sparkles = [
-			"/images/spark_1_2.svg",
-			"/images/spark_2_2.svg",
-			"/images/spark_3_2.svg"
+			"#spark1",
+			"#spark2"
 		];
+		var spark = sparkles[Math.floor(Math.random()*sparkles.length)];
 
-		var item = sparkles[Math.floor(Math.random()*sparkles.length)];
+		particles[id].append('use')
+			.attr('xlink:href', spark)
+			.attr('transform', 'translate(-'+size+', -'+size+') scale('+scale_size+') ');
 
-	  	var spark = d3.xml(item, "image/svg+xml", function(xml) {
-	  	  var importedNode = document.importNode(xml.documentElement, true);
-	  	  	$(cont +  "_p_" +id).html($(cont +  "_p_" +id).html() + importedNode.innerHTML);
-
-	  		d3.select(cont +  '_p_' + id).select('g')
-	  		  .attr('transform', 'translate(-'+size+', -'+size+') scale('+scale_size+') ');
-	  	});
-
-	  	// reposition sparkle and animate
 		particles[id]
 			.attr('transform', 'translate('+x+','+pos.y+') scale(0) rotate(0)')
 			.attr('id', cont.slice(1) +  "_p_" +id)
-			.style('opacity', o)
+			.style('opacity', 1)
 			.transition()
 		    .duration(dur)
 		    .delay(delay)
@@ -191,13 +178,12 @@ function SPARKLER(cont, args) {
 		    .style('opacity', 0)
 			.attr('transform', 'translate('+x+','+pos.y+') scale(0.5) rotate(90)')
 
-			// remove sparkle, when animation done
 		    .each("end", function() {
-		    	particles[id].remove();
-		    	d3.select(container).select(cont + '_p_' + id).remove();
-		    	if ( id < maxCount) {
-		    		generateParticle(id);
-		    	}
+			    	particles[id].remove();
+			    	d3.select(container).select(cont + '_p_' + id).remove();
+			    	if ( id < maxCount) {
+			    		generateParticle(id);
+			    	}
 		    });	
 	}
 	return {
@@ -220,7 +206,9 @@ $(document).ready(function() {
 		radiusMax : 30,
 		opacityMin : 0.5,
 		opacityMax : 2,
-		maxCount : 100
+		maxCount : 80,
+		thresholdMin : 30,
+		thresholdMax : 0
 	});
 
 	var s2 = new SPARKLER("#line2", {
@@ -229,20 +217,20 @@ $(document).ready(function() {
 		radiusMax : 70,
 		opacityMin : 20,
 		opacityMax : 20,
-		thresholdMin : 20,
-		thresholdMax : 100,
+		thresholdMin : 0,
+		thresholdMax : 0,
 		maxCount : 50
 	});
 
 	var s3 = new SPARKLER('#line3', {
 		path : "Layer_3", 
-		radiusMin : 150,
+		radiusMin : 100,
 		radiusMax : 20,
 		opacityMin : 0.5,
 		opacityMax : 2,
-		thresholdMin : 50,
-		thresholdMax : 20,
-		maxCount : 100
+		thresholdMin : 0,
+		thresholdMax : 0,
+		maxCount : 50
 	});
 
 	s1.init();
