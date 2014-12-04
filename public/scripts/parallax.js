@@ -108,10 +108,8 @@ function paralax (el, start, duration, initialStyle, destStyle ) {
 
 function floatval ( mixed_var ) { return (parseFloat(mixed_var) || 0) }
 
-
 function isElementInViewport(el) {
 	return true;
-
 }
 
 
@@ -126,16 +124,16 @@ $(window).load(function () {
     lastPosition = -1, 
     wHeight = window.innerHeight, 
     wWidth = window.innerWidth,
+
+    // this is the most important part;  elemets - an array of elements to animate; anims - animations, anims[x] = {element, windowScroll initial position, windowScroll end position, initial styles, end styles}
     elements = [
         document.getElementById("globe_small")
       , document.getElementById("globe_medium")
       , document.getElementById("globe_large")
       , document.getElementById("campain-overlay__header")
       , document.getElementById("movie_titles")
-        //document.getElementById("globe_medium")
     ],
-//   margin-left: 74px;
-  // margin-top: -114px;
+
     anims = [
         [elements[0], 0, wHeight, {'top' : 326 }, {'top' : 450 }]
        ,[elements[1], 0, wHeight*1.5, {marginTop : -114}, {marginTop: 400}]
