@@ -115,7 +115,16 @@ td {
   background-image: url("/images/campaign_front.png");
   position: relative;
   z-index: 10;
+}
 
+#campaign a.campaignPoster__anchor {
+  position: absolute;
+  left: 0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  background: url("about:blank");
 
 }
 
@@ -319,6 +328,7 @@ table tr td:last-child {
     height: 0;
     padding-bottom: 37.357%;
     background-size: 100%;
+    z-index: 999;
   }
 
   #movie_titles {
