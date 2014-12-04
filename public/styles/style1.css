@@ -8,29 +8,9 @@ body {
   font-size: 16px;
 }
 
-.hero-unit {
-  margin: 50px auto 0 auto;
-  width: 300px;
-  font-size: 18px;
-  font-weight: 200;
-  line-height: 30px;
-  background-color: #eee;
-  border-radius: 6px;
-  padding: 60px;
+#page {
+  position: relative;
 }
-.hero-unit h1 {
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
-}
-
 #line {
   width: 1500px;
   display: block;
@@ -284,4 +264,59 @@ table tr td:first-child {
 
 table tr td:last-child {
   text-align: right;
+}
+
+
+@media all and (max-width: 1500px) {
+  #globe_large {
+    margin-left: 5.3%;
+    width: 28.8%;
+    height: 0;
+    padding-bottom: 34.86%;
+    background-size: 100%;
+    top:0;
+    margin-top:3.066%;
+  }
+
+  #globe_medium {
+    width: 43.73%;
+    height: 0;
+    padding-bottom: 28%;
+    margin-left: 4.93%;
+    background-size: 100%;
+    margin-top: -7.6%;
+  }
+
+  #globe_small {
+    width: 11.6%;
+    height: 0;
+    padding-bottom: 11.6%;
+    background-size: 100%;
+    margin-left: -4.6%;
+    top:0;
+    margin-top: 21.5%;
+  }
+
+  .campain-overlay__header {
+    top:0;
+    margin: -13.55% auto 0;
+    height: 0;
+    padding-bottom: 56.73%;
+    background-size:auto 89.3%;
+    background-position: 50% 0;
+    display: block;
+  }
+
+  #campaign {
+    height: 0;
+    padding-bottom: 37.357%;
+    background-size: 100%;
+  }
+
+  #movie_titles {
+    top :0;
+    margin-top: 26.5%;
+    margin-left: 29.73%;
+  }
+
 }

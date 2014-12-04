@@ -233,8 +233,8 @@ $(document).ready(function() {
 		maxCount : 50
 	});
 
-	s1.init();
-	s2.init();
-	s3.init();
+	// s1.init();
+	// s2.init();
+	// s3.init();
 })
 
