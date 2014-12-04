@@ -131,15 +131,15 @@ $(window).load(function () {
       , document.getElementById("globe_medium")
       , document.getElementById("globe_large")
       , document.getElementById("campain-overlay__header")
-      , document.getElementById("movie_titles")
+      // , document.getElementById("movie_titles")
     ],
 
     anims = [
-       //  [elements[0], 0, wHeight, {'top' : 0 }, {'top' : 124 }]
-       // ,[elements[1], 0, wHeight*1.5, {marginTop : -114}, {marginTop: 400}]
-       // ,[elements[2], 0, wHeight, {top : 0}, {top : wHeight/10}]
-       // ,[elements[3], 0, wHeight, {top : 0}, {top : 46}]
-       // ,[elements[4], 0, wHeight, {top : 0}, {top : wHeight/12}]
+        [elements[0], 0, wHeight, {'top' : 0 }, {'top' : wHeight/30 }]
+       ,[elements[1], 0, wHeight, {marginTop : -114}, {marginTop: wHeight/5}]
+       ,[elements[2], 0, wHeight, {top : 0}, {top : wHeight/10}]
+       ,[elements[3], 0, wHeight, {top : 0}, {top : wHeight/10}]
+       ,[elements[4], 0, wHeight, {top : 0}, {top : wHeight/2}]
     ], 
     height = [];
 
@@ -175,7 +175,6 @@ $(window).load(function () {
                 for (var a = 0; a < u.length; a++) {
                     if ((u[a][1] <= window.pageYOffset) && (window.pageYOffset < u[a][1] + u[a][2])) {
                         s = paralax(u[a][0], u[a][1], u[a][2], u[a][3], u[a][4]);
-                        console.dir(s)
                         for (var b in s) {
                             if (($(window).width() < 1500)) {
                                 cs[b] = (s[b]* 100 / 1500) + '%';

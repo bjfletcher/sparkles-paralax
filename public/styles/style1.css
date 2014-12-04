@@ -318,5 +318,31 @@ table tr td:last-child {
     margin-top: 26.5%;
     margin-left: 29.73%;
   }
+}
+
+@media all and (max-width: 980px)  {
+  #globe_small,
+  #globe_medium,
+  #globe_large,
+  #movie_titles,
+  .campain-overlay__header {
+    display: none;
+  }
+
+  #campaign {
+    background-image: url(/images/campaign_tablet.jpg);
+    margin-bottom: 0;
+    padding-bottom: 40%;
+    background-color: white;
+    background-repeat: no-repeat;
+  }
+
+}
+
+@media all and (max-width: 640px)  {
+  #campaign {
+    background-image: url(/images/campaign_mobile.jpg);
+    padding-bottom: 42%;
+  }
 
 }
