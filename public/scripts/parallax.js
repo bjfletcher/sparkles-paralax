@@ -115,6 +115,7 @@ function isElementInViewport(el) {
 
 $(window).load(function () {
 
+
    
     var scroll;
     scroll = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (callback) {
@@ -144,6 +145,10 @@ $(window).load(function () {
     height = [];
 
     function loop() {
+
+        if ($(window).width() < 980) {
+            return false;
+        }
         
         if (lastPosition == window.pageYOffset) {
             scroll(loop)
@@ -178,7 +183,6 @@ $(window).load(function () {
                         for (var b in s) {
                             if (($(window).width() < 1500)) {
                                 cs[b] = (s[b]* 100 / 1500) + '%';
-
                             } else {
                             cs[b] = s[b];
 

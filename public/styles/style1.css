@@ -266,6 +266,14 @@ table tr td:last-child {
   text-align: right;
 }
 
+.campaign_poster {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("about:blank");
+}
 
 @media all and (max-width: 1500px) {
   #globe_large {
